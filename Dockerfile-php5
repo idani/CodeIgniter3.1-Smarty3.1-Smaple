@@ -1,0 +1,35 @@
+FROM php:5-fpm-alpine
+
+# https://stackoverflow.com/questions/54226604/how-to-add-php-redis-for-a-dockerfile-of-laravel-to-kubernetes
+RUN set -eux \
+    && apk add --no-cache --virtual .build-deps \
+        $PHPIZE_DEPS \
+        curl \
+        libtool \
+        libxml2-dev \
+        libmcrypt-dev \
+    && apk add --no-cache \
+        curl \
+        git \
+        mysql-client \
+        bash \
+        tzdata \
+        ssmtp \
+        libmcrypt \
+    && cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && echo "Asia/Tokyo" > /etc/timezone \
+    && pecl install redis-4.3.0 \
+    && pecl install xdebug-2.5.5 \
+    && docker-php-ext-install \
+        mbstring \
+        pdo \
+        pdo_mysql \
+        mysqli \
+        tokenizer \
+        bcmath \
+        opcache \
+        xml \
+        mcrypt \
+    && apk del -f .build-deps \
+    && docker-php-ext-enable \
+       redis \
+       xdebug

@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src:/src
+      - ./site.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+  app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile-php5
+    env_file: .env
+    environment:
+      DATABASE_HOST: db
+    depends_on:
+      - db
+    volumes: 
+      - ./src:/src
+      - ./ssmtp.conf:/etc/ssmtp/ssmtp.conf
+      - ./php.ini:/usr/local/etc/php/php.ini
+      - ./xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+  db:
+    image: mysql:5.6
+    env_file: .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - ${DOCKER_MYSQL_DATA_DIR}:/var/lib/mysql
+      # - ./initial.sql:/docker-entrypoint-initdb.d/01.initial.sql
+  maildev:
+    image: kanemu/maildev-with-iconv
+#    command: bin/maildev -w 80 -s 25 --incoming-user ${SMTP_USER} --incoming-pass ${SMTP_PASSWORD}
+    ports:
+      - 8025:80
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    env_file: .env
+    environment:
+      PMA_HOST: db
+    depends_on:
+      - db
+    ports:
+      - 8033:80
+    volumes:
+      - /sessions
+
+  # composer:
+  #   image: composer
+  #   volumes: 
+  #     - ./src/application:/app
+  #   command: composer install
+
