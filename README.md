@@ -13,4 +13,4 @@ docker-compose up
 127.0.0.1:8000/HelloWorld
 
 Smartyの導入手順、使い方は、以下の記事を参考にしてください。
-codeigniter 3.1.10 と Smarty 3.1を連携する開発環境を構築する(https://qiita.com/idani/items/12abe952754ecf0a3de6)
+[codeigniter 3.1.10 と Smarty 3.1を連携する開発環境を構築する](https://qiita.com/idani/items/12abe952754ecf0a3de6)
