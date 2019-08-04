@@ -52,5 +52,5 @@ services:
     image: composer
     volumes: 
       - ./src/application:/app
-    command: composer require smarty/smarty
+    command: composer install
 
