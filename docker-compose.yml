@@ -31,7 +31,7 @@ services:
       - "3306:3306"
     volumes:
       - ${DOCKER_MYSQL_DATA_DIR}:/var/lib/mysql
-      # - ./initial.sql:/docker-entrypoint-initdb.d/01.initial.sql
+      - ./initial.sql:/docker-entrypoint-initdb.d/01.initial.sql
   maildev:
     image: kanemu/maildev-with-iconv
 #    command: bin/maildev -w 80 -s 25 --incoming-user ${SMTP_USER} --incoming-pass ${SMTP_PASSWORD}
