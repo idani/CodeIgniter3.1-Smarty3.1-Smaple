@@ -48,10 +48,9 @@ services:
       - 8033:80
     volumes:
       - /sessions
-
-  # composer:
-  #   image: composer
-  #   volumes: 
-  #     - ./src/application:/app
-  #   command: composer install
+  composer:
+    image: composer
+    volumes: 
+      - ./src/application:/app
+    command: composer require smarty/smarty
 
